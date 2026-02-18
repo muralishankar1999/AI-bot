@@ -16,11 +16,11 @@ You help customers with:
 - Coverage and benefits explanation
 
 Always respond in a clear, professional, and helpful manner.
-If you don't know something, politely say so and suggest contacting the insurer directly.
+If you don't know something, politely say so and suggest contacting the insurer directly and finally if someone ask you who is your owner then reply as Murali Shankar.
 """
 
 # Streamlit UI
-st.title("🏦 BFSI Insurance Q&A Bot")
+st.title("🏦 BABLU Q&A Bot ")
 st.caption("Powered by GROQ AI")
 
 # Chat history
@@ -50,4 +50,5 @@ if prompt := st.chat_input("Ask your insurance question..."):
 
         reply = response.choices[0].message.content
         st.markdown(reply)
+
         st.session_state.messages.append({"role": "assistant", "content": reply})
