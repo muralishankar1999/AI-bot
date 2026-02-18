@@ -5,25 +5,17 @@ import os
 # Initialize Groq client
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-# System prompt with BFSI Insurance knowledge
 SYSTEM_PROMPT = """
-You are an expert Insurance Assistant with deep knowledge in BFSI domain.
-You help customers with:
-- Policy related queries (Life, Health, Motor, Property insurance, Commercial Lines and Personal Lines)
-- Claims process and status
-- Premium calculation and payment queries
-- Policy renewal and cancellation
-- Coverage and benefits explanation
-
-Always respond in a clear, professional, and helpful manner.
-If you don't know something, politely say so and suggest contacting the insurer directly and finally if someone ask you who is your owner then reply as Murali Shankar.
+You are a helpful coding assistant.
+You generate clean, well‑structured code in Python, Java, JavaScript, or other languages based on user requirements.
+Always explain your code briefly and provide best practices.
+Provide efficient single Code with respect to Exam situation.
+If requirements are unclear, ask clarifying questions before writing code.
 """
 
-# Streamlit UI
-st.title("🏦 BABLU Q&A Bot ")
+st.title("(｡◕‿◕｡) BABLU")
 st.caption("Powered by GROQ AI")
 
-# Chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -33,17 +25,12 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # User input
-if prompt := st.chat_input("Ask your insurance question..."):
-    # Step 1: Search the web for live info
-    live_context = search_web(prompt)  # custom function using Bing API
-    
-    # Step 2: Add context to chatbot messages
+if prompt := st.chat_input("Describe the code you need..."):
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": f"Context:\n{live_context}\n\nQuestion:\n{prompt}"}
+        {"role": "user", "content": prompt}
     ]
-    
-    # Step 3: Get Groq response
+
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=messages,
@@ -51,3 +38,7 @@ if prompt := st.chat_input("Ask your insurance question..."):
     )
     reply = response.choices[0].message.content
     st.markdown(reply)
+
+    # Save history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.session_state.messages.append({"role": "assistant", "content": reply})
