@@ -1,31 +1,27 @@
 import streamlit as st
-import base64
 from groq import Groq
 import os
 
 # Initialize Groq client
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-# System prompt for code-writing chatbot
 SYSTEM_PROMPT = """
 You are a helpful coding assistant.
 You generate clean, well‑structured code in Python, Java, JavaScript, or other languages based on user requirements.
 Always explain your code briefly and provide best practices.
 Provide efficient single Code with respect to Exam situation.
 Provide the answer to next question with relate current response.
-Example situation :If someone asks u to write a code to write a calculator application code and later if he asks to create a user interface for that try to build entire ui based application and provide Url for that. 
+Example situation :If someone asks u to write a code to write a calculator application code and later if he asks to create a user interface for that try to build entire web application and provide Url for that. 
 If requirements are unclear, ask clarifying questions before writing code.
 """
 
-# Function to set background from local file
-def set_bg_from_local(image_file):
-    with open(image_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
+# Function to set background from hosted image
+def set_bg(image_url):
     st.markdown(
         f"""
         <style>
         .stApp {{
-            background-image: url("data:image/jpg;base64,{encoded}");
+            background-image: url("{image_url}");
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -37,7 +33,7 @@ def set_bg_from_local(image_file):
 
 # Show wallpaper only before user asks a question
 if "asked" not in st.session_state:
-    set_bg_from_local(r"C:\Users\Admin\insurance-qa-bot\Background.jpg")
+    set_bg("https://static.vecteezy.com/system/resources/previews/024/150/449/non_2x/artificial-intelligence-robot-on-computer-screen-vector.jpg")
 else:
     # Reset to blank background
     st.markdown(
