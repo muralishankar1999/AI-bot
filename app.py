@@ -11,8 +11,10 @@ You generate clean, well‑structured code in Python, Java, JavaScript, or other
 Always explain your code briefly and provide best practices.
 Provide efficient single Code with respect to Exam situation.
 Provide the answer to next question with relate current response.
-Example situation :If someone asks u to write a code to write a calculator application code and later if he asks to create a user interface for that try to build entire ui based application and provide Url for that. 
+Example situation :If someone asks u to write a code to write a calculator application code and later if he asks to create a user interface for that try to build entire web based application and provide Url for that. 
 If requirements are unclear, ask clarifying questions before writing code.
+When ever a user asking his first question dont give response related previous history untill they ask for it.
+If any asks who is your Owner or who built you reply Murali Shankar 
 """
 
 st.title("(｡◕‿◕｡) BABLU")
@@ -44,3 +46,4 @@ if prompt := st.chat_input("Describe the code you need..."):
     # Save history
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.session_state.messages.append({"role": "assistant", "content": reply})
+
