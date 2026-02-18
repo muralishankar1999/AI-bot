@@ -34,21 +34,20 @@ for message in st.session_state.messages:
 
 # User input
 if prompt := st.chat_input("Ask your insurance question..."):
-
-    # Add user message to history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
-
-    # Get Groq response
-    with st.chat_message("assistant"):
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[{"role": "system", "content": SYSTEM_PROMPT}] + st.session_state.messages,
-            max_tokens=1024,
-        )
-
-        reply = response.choices[0].message.content
-        st.markdown(reply)
-
-        st.session_state.messages.append({"role": "assistant", "content": reply})
+    # Step 1: Search the web for live info
+    live_context = search_web(prompt)  # custom function using Bing API
+    
+    # Step 2: Add context to chatbot messages
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": f"Context:\n{live_context}\n\nQuestion:\n{prompt}"}
+    ]
+    
+    # Step 3: Get Groq response
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=messages,
+        max_tokens=1024,
+    )
+    reply = response.choices[0].message.content
+    st.markdown(reply)
